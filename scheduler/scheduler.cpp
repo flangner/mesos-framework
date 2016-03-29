@@ -73,6 +73,8 @@ DEFINE_string(client_image, "",
               "Docker image name of the Quobyte client");
 DEFINE_string(public_slave_role, "",
               "Role name for slaves that receive Console and API");
+DEFINE_string(remote_debug_port, "",
+              "Port for the JVM remote debugger");
 
 static const char* kExecutorId = "quobyte-mesos-prober-";
 static const char* kArchiveUrl = "/executor.tar.gz";
@@ -193,6 +195,10 @@ static std::string constructDockerExecuteCommand(
   if (!FLAGS_extra_service_config.empty()) {
     rcs << " && export QUOBYTE_EXTRA_SERVICE_CONFIG="
         << FLAGS_extra_service_config;
+  }
+  if (!FLAGS_remote_debug_port.empty()) {
+    rcs << " && export QUOBYTE_DEBUG_PORT="
+        << FLAGS_remote_debug_port;
   }
   rcs << " && /opt/main.sh";
 
